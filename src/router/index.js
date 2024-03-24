@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const Home = () => import('@/views/Home/HomeIndex.vue')
-const Dashboard = () => import('@/views/Dashboard/DashboardIndex.vue')
+const Home = () => import('@/views/HomeView.vue')
+const Dashboard = () => import('@/views/DashboardView.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
