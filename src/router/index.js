@@ -1,8 +1,10 @@
+import authGuard from '@/services/authGuard'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const Home = () => import('@/views/HomeView.vue')
 const Dashboard = () => import('@/views/DashboardView.vue')
 const CreateAccountView = () => import('@/views/CreateAccountView.vue')
+const Unauthorized = () => import('@/views/WithoutAuthorizationView.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,9 +22,12 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard,
-      meta: {
-        hasAuth: true
-      }
+      beforeEnter: authGuard
+    },
+    {
+      path: '/unauthorized',
+      name: 'Unauthorized',
+      component: Unauthorized
     }
   ]
 })
