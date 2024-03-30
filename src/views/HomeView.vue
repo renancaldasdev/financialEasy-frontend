@@ -1,19 +1,19 @@
 <template>
   <div class="flex flex-col justify-center items-center h-screen">
-    <h3 class="text-5xl font-thin mb-10">MyFinancyEasy</h3>
-    <LoginForm />
-    <WaveSgv class="fixed bottom-0" />
+    <h3 class="text-5xl mb-10 font-bold">MyFinancy<span class="font-light">Easy</span></h3>
+
+    <RouterView>
+      <LoginFormView />
+    </RouterView>
   </div>
 </template>
 
 <script>
-import WaveSgv from '@/components/WaveHome.vue'
-import LoginForm from '@/components/form/LoginForm.vue'
+import LoginFormView from './LoginFormView.vue'
 
 export default {
   components: {
-    WaveSgv,
-    LoginForm
+    LoginFormView
   }
 }
 </script>
