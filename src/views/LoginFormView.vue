@@ -71,7 +71,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import axios from 'axios'
+import http from '@/services/http.js'
 
 const email = ref('')
 const password = ref('')
@@ -82,7 +82,7 @@ const toast = useToast()
 
 const login = async () => {
   try {
-    const response = await axios.post('http://localhost:8000/api/login', {
+    const response = await http.post('login', {
       email: email.value,
       password: password.value
     })
@@ -93,17 +93,4 @@ const login = async () => {
     toast.error(error.response.data.message)
   }
 }
-
-router.beforeEach((to, from, next) => {
-  if (to.path === '/dashboard') {
-    const accessToken = localStorage.getItem('access_token')
-    if (!accessToken) {
-      next('/home')
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
-})
 </script>
