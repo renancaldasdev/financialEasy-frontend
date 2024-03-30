@@ -4,7 +4,7 @@
   </div>
   <div class="flex flex-col justify-center items-center min-h-screen -mt-20">
     <h3 class="text-5xl mb-10 font-bold">MyFinancy<span class="font-light">Easy</span></h3>
-    <form @submit.prevent="create" class="w-1/2 lg:w-1/3">
+    <form @submit.prevent="register" class="w-1/2 lg:w-1/3">
       <div class="sm:col-span-4">
         <label for="email" class="block font-medium leading-6 text-gray-900 text-base">Nome</label>
         <div class="mt-2">
@@ -93,15 +93,30 @@
 
 <script setup>
 import { ref } from 'vue'
-// import { useRouter } from 'vue-router'
-// import { useToast } from 'vue-toastification'
-// import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
+import http from '@/services/http.js'
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 
-// const router = useRouter()
+const router = useRouter()
 
-// const toast = useToast()
+const toast = useToast()
+
+const register = async () => {
+  try {
+    const response = await http.post('register', {
+      name: name.value,
+      email: email.value,
+      password: password.value
+    })
+    localStorage.setItem('access_token', response.data.access_token)
+    toast.success(response.data.message)
+    router.push('/dashboard')
+  } catch (error) {
+    toast.error(error.response.data.message)
+  }
+}
 </script>
