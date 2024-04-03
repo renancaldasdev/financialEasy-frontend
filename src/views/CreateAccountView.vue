@@ -5,7 +5,7 @@
   <div class="flex flex-col justify-center items-center min-h-screen -mt-20">
     <h3 class="text-5xl mb-10 font-bold">MyFinancy<span class="font-light">Easy</span></h3>
     <form @submit.prevent="register" class="w-1/2 lg:w-1/3">
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-4 mb-2">
         <label for="email" class="block font-medium leading-6 text-gray-900 text-base">Nome</label>
         <div class="mt-2">
           <input
@@ -49,12 +49,11 @@
         }}</span>
       </div>
 
-      <div class="sm:col-span-4 mt-4">
+      <div class="sm:col-span-4 mt-2">
         <div class="flex justify-between items-center">
           <label for="email" class="block text-base font-medium leading-6 text-gray-900"
             >Senha</label
           >
-          <p class="font-light text-primaryColor text-sm">Esqueceu a senha?</p>
         </div>
         <div class="relative mt-2">
           <input

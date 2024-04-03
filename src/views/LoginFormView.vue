@@ -26,7 +26,9 @@
     <div class="sm:col-span-4 mt-4">
       <div class="flex justify-between items-center">
         <label for="email" class="block text-base font-medium leading-6 text-gray-900">Senha</label>
-        <p class="font-light text-primaryColor text-sm">Esqueceu a senha?</p>
+        <p @click="toggleModal" class="font-light text-primaryColor text-sm cursor-pointer">
+          Esqueceu a senha?
+        </p>
       </div>
       <div class="relative mt-2">
         <input
@@ -88,6 +90,51 @@
       Criar uma conta
     </RouterLink>
   </form>
+
+  <teleport to="body">
+    <ModalStandard :visible="modalVisible" @update:visible="modalVisible = $event">
+      <form class="space-y-4" @submit.prevent="forgetPassword">
+        <div class="sm:col-span-4">
+          <label for="email" class="block font-medium leading-6 text-gray-900 text-base"
+            >Email</label
+          >
+          <div class="mt-2">
+            <input
+              v-model="user.email"
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="johndoe@email.com"
+              class="block w-full rounded-md border-0 py-1.5 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primaryColor sm:text-sm sm:leading-6 outline-none text-base font-regular"
+              :class="{
+                borderError: !!validate.email
+              }"
+              @input="clearError('email')"
+            />
+          </div>
+          <span v-if="validate.email" class="block font-medium text-red-500 text-xs mt-1">{{
+            validate.email[0]
+          }}</span>
+        </div>
+        <div class="flex items-center mt-6 space-x-4 rtl:space-x-reverse">
+          <button
+            type="submit"
+            class="text-white bg-primaryColor hover:bg-specialGreen focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            Enviar email
+          </button>
+          <button
+            @click="toggleModal"
+            type="button"
+            class="py-2.5 px-5 text-sm font-medium text-gray focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-black focus:z-10 focus:ring-4 focus:ring-gray-100"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </ModalStandard>
+  </teleport>
 </template>
 
 <script setup>
@@ -95,6 +142,7 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import http from '@/services/http.js'
+import ModalStandard from '@/components/Modal/ModalStandard.vue'
 
 import eyeClose from '@/components/icons/eyeClose.vue'
 import eyeOpen from '@/components/icons/eyeOpen.vue'
@@ -103,11 +151,18 @@ const user = reactive({
   email: '',
   password: ''
 })
+
+const modalVisible = ref(false)
+
 const showPassword = ref(false)
 
 const router = useRouter()
 const toast = useToast()
 const validate = reactive({})
+
+const toggleModal = () => {
+  modalVisible.value = !modalVisible.value
+}
 
 const clearError = (field) => {
   validate[field] = null
@@ -124,7 +179,7 @@ const login = async () => {
       password: user.password
     })
     localStorage.setItem('access_token', response.data.access_token)
-    toast.success('Login realizado com sucesso!')
+    toast.success(response.data.message)
     router.push('/dashboard')
   } catch (error) {
     if (error.response && error.response.status === 422) {
@@ -134,6 +189,10 @@ const login = async () => {
       toast.error(error.response.data.message)
     }
   }
+}
+
+const forgetPassword = () => {
+  console.log('oi')
 }
 </script>
 
