@@ -49,6 +49,7 @@
         <span
           @click="togglePasswordVisibility"
           class="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer"
+          :class="{ eyeError: !!validate.password }"
         >
           <eyeOpen v-show="!showPassword" />
           <eyeClose v-show="showPassword" />
@@ -139,5 +140,9 @@ const login = async () => {
 <style scoped>
 .borderError {
   border: 1px solid red;
+}
+
+.eyeError {
+  top: -15px;
 }
 </style>
