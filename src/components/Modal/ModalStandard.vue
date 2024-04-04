@@ -1,10 +1,4 @@
 <template>
-  <!-- <div class="modal" v-if="visible" @click.self="closeModal">
-    <div class="modal-content">
-      <slot></slot>
-    </div>
-  </div> -->
-
   <div v-if="visible" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="fixed inset-0 bg-black opacity-50"></div>
     <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-8 relative">
@@ -12,7 +6,7 @@
       <div class="relative">
         <!-- Modal header -->
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl text-center font-semibold text-gray-900">Esqueci minha senha</h3>
+          <h3 class="text-xl text-center font-semibold text-gray-900">{{ title }}</h3>
           <button
             @click="closeModal"
             type="button"
@@ -36,7 +30,6 @@
             <span class="sr-only">Close modal</span>
           </button>
         </div>
-        <!-- Modal body -->
         <div>
           <slot></slot>
         </div>
@@ -49,7 +42,8 @@
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
-  visible: Boolean
+  visible: Boolean,
+  title: String
 })
 
 const closeModal = () => {
