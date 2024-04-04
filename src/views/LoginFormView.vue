@@ -89,7 +89,11 @@
   </form>
 
   <teleport to="body">
-    <ModalStandard :visible="modalVisible" @update:visible="modalVisible = $event">
+    <ModalStandard
+      :visible="modalVisible"
+      :title="modalTitle"
+      @update:visible="modalVisible = $event"
+    >
       <form class="space-y-4" @submit.prevent="forgetPassword">
         <div class="sm:col-span-4">
           <label for="email" class="block font-medium leading-6 text-gray-900 text-base"
@@ -151,6 +155,7 @@ const user = reactive({
 })
 
 const modalVisible = ref(false)
+const modalTitle = ref('Recuperar senha')
 
 const showPassword = ref(false)
 

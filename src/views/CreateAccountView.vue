@@ -93,8 +93,9 @@
           />
         </div>
         <div class="leading-6">
-          <label for="comments" class="font-light text-base"
-            >Li e concordo com os termos de uso</label
+          <label for="comments" class="font-light text-base">Li e concordo com os </label>
+          <span class="text-primaryColor font-bold cursor-pointer" @click="toggleModal"
+            >termos de uso</span
           >
         </div>
       </div>
@@ -115,6 +116,22 @@
       </RouterLink>
     </form>
   </div>
+
+  <teleport to="body">
+    <ModalStandard
+      :visible="modalVisible"
+      :title="modalTitle"
+      @update:visible="modalVisible = $event"
+    >
+      <p class="font-light">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </ModalStandard>
+  </teleport>
 </template>
 
 <script setup>
@@ -122,6 +139,7 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import http from '@/services/http.js'
+import ModalStandard from '@/components/Modal/ModalStandard.vue'
 import ButtonStandard from '@/components/Buttons/ButtonStandard.vue'
 
 import eyeClose from '@/components/icons/eyeClose.vue'
@@ -133,6 +151,8 @@ const user = reactive({
   password: ''
 })
 const showPassword = ref(false)
+const modalVisible = ref(false)
+const modalTitle = ref('Termos de uso da aplicação')
 
 const router = useRouter()
 const toast = useToast()
@@ -144,6 +164,10 @@ const clearError = (field) => {
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
+}
+
+const toggleModal = () => {
+  modalVisible.value = !modalVisible.value
 }
 
 const register = async () => {
