@@ -89,7 +89,7 @@
             id="comments"
             name="comments"
             type="checkbox"
-            class="h-4 w-4 rounded border-gray-300 text-primaryColor focus:ring-primaryColor bg-primaryColor"
+            class="h-4 w-4 rounded border-gray-300 accent-primaryColor"
           />
         </div>
         <div class="leading-6">
@@ -99,9 +99,7 @@
         </div>
       </div>
 
-      <div class="flex gap-2 mt-4">
-        <button class="w-full bg-primaryColor text-white p-2 rounded font-bold">Criar</button>
-      </div>
+      <ButtonStandard> Criar </ButtonStandard>
 
       <div class="flex items-center justify-center mt-4">
         <div class="flex-grow border-t border-gray-400"></div>
@@ -124,6 +122,7 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import http from '@/services/http.js'
+import ButtonStandard from '@/components/Buttons/ButtonStandard.vue'
 
 import eyeClose from '@/components/icons/eyeClose.vue'
 import eyeOpen from '@/components/icons/eyeOpen.vue'

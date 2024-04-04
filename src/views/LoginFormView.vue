@@ -1,5 +1,4 @@
 <template>
-  <h2>Seja Bem vindo</h2>
   <form @submit.prevent="login" class="w-1/2 lg:w-1/3">
     <div class="sm:col-span-4">
       <label for="email" class="block font-medium leading-6 text-gray-900 text-base">Email</label>
@@ -73,9 +72,7 @@
       </div>
     </div>
 
-    <div class="flex gap-2 mt-4">
-      <button class="w-full bg-primaryColor text-white p-2 rounded font-bold">Entrar</button>
-    </div>
+    <ButtonStandard> Entrar </ButtonStandard>
 
     <div class="flex items-center justify-center mt-4">
       <div class="flex-grow border-t border-gray-400"></div>
@@ -143,6 +140,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import http from '@/services/http.js'
 import ModalStandard from '@/components/Modal/ModalStandard.vue'
+import ButtonStandard from '@/components/Buttons/ButtonStandard.vue'
 
 import eyeClose from '@/components/icons/eyeClose.vue'
 import eyeOpen from '@/components/icons/eyeOpen.vue'

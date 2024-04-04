@@ -30,6 +30,7 @@ export default {
     extend: {
       colors: {
         primaryColor: '#299D91',
+        primaryColorHover: '#41B8AC',
         defaultBlack: '#191919',
         secondary: '#525256',
         gray01: '#666666',
