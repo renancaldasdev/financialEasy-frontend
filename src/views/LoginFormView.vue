@@ -62,14 +62,14 @@
     <div class="relative flex gap-x-2 mt-2">
       <div class="flex h-6 items-center">
         <input
-          id="comments"
-          name="comments"
+          id="keepLogged"
+          name="keepLogged"
           type="checkbox"
-          class="h-4 w-4 rounded border-gray-300 text-primaryColor focus:ring-primaryColor bg-primaryColor"
+          class="h-4 w-4 rounded border-gray-300 accent-primaryColor"
         />
       </div>
       <div class="leading-6">
-        <label for="comments" class="font-light text-base">Manter conectado</label>
+        <label for="keepLogged" class="font-light text-base">Manter conectado</label>
       </div>
     </div>
 
