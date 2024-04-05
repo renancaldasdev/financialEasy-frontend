@@ -121,7 +121,7 @@
         <div class="flex items-center mt-6 space-x-4 rtl:space-x-reverse">
           <button
             type="submit"
-            class="text-white bg-primaryColor hover:bg-specialGreen focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            class="text-white bg-primaryColor hover:bg-primaryColorHover focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
             Enviar email
           </button>
@@ -194,8 +194,22 @@ const login = async () => {
   }
 }
 
-const forgetPassword = () => {
-  console.log('oi')
+const forgetPassword = async () => {
+  try {
+    const response = await http.post('forgotpassword', {
+      email: user.email
+    })
+    console.log(response)
+    toast.success(response.data.Message)
+    router.push('/')
+  } catch (error) {
+    if (error.response && error.response.status === 422) {
+      const validationErrors = error.response.data.errors
+      Object.assign(validate, validationErrors)
+    } else {
+      toast.error(error.response.data.Message)
+    }
+  }
 }
 </script>
 
