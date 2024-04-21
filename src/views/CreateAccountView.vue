@@ -4,7 +4,7 @@
   </div>
   <div class="flex flex-col justify-center items-center min-h-screen -mt-20">
     <h3 class="text-5xl mb-10 font-bold">MyFinancy<span class="font-light">Easy</span></h3>
-    <form @submit.prevent="register" class="w-1/2 lg:w-1/3">
+    <form @submit.prevent="handleRegister" class="w-1/2 lg:w-1/3">
       <div class="sm:col-span-4 mb-2">
         <label for="email" class="block font-medium leading-6 text-gray-900 text-base">Nome</label>
         <div class="mt-2">
@@ -137,13 +137,13 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import http from '@/services/http.js'
+import { register } from '@/services/http.js'
 import ModalStandard from '@/components/Modal/ModalStandard.vue'
 import ButtonStandard from '@/components/Buttons/ButtonStandard.vue'
 
 import eyeClose from '@/components/icons/eyeClose.vue'
 import eyeOpen from '@/components/icons/eyeOpen.vue'
+import { sleep } from '@/utils/sleep'
 
 const user = reactive({
   name: '',
@@ -155,7 +155,6 @@ const modalVisible = ref(false)
 const modalTitle = ref('Termos de uso da aplicação')
 
 const router = useRouter()
-const toast = useToast()
 const validate = reactive({})
 
 const clearError = (field) => {
@@ -170,25 +169,15 @@ const toggleModal = () => {
   modalVisible.value = !modalVisible.value
 }
 
-const register = async () => {
-  try {
-    const response = await http.post('register', {
-      name: user.name,
-      email: user.email,
-      password: user.password
-    })
-    localStorage.setItem('access_token', response.data.access_token)
-    toast.success(response.data.message)
-    router.push('/dashboard')
-  } catch (error) {
-    if (error.response && error.response.status === 422) {
-      const validationErrors = error.response.data.errors
-      if (Object.keys(validationErrors).length > 0) {
-        Object.assign(validate, validationErrors)
-      }
-    } else {
-      toast.error(error.response.data.message)
-    }
+const handleRegister = async (e) => {
+  e.preventDefault()
+  const resp = await register(user)
+  if (resp.status === 201) {
+    await sleep(1000)
+    router.push({ path: '/dashboard' })
+  } else {
+    console.log(resp)
+    Object.assign(validate, resp)
   }
 }
 </script>
