@@ -71,7 +71,7 @@ export const register = async (data) => {
     console.log(response.data)
     if (response.status === 201) {
       setCurrentUser(data)
-      localStorage.setItem('current_user', response.data.access_token)
+      localStorage.setItem('access_token', response.data.access_token)
       toast.success(response.data.message)
     }
     return response
