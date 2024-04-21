@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="login" class="w-1/2 lg:w-1/3">
+  <form @submit.prevent="handleLogin" class="w-1/2 lg:w-1/3">
     <div class="sm:col-span-4">
       <label for="email" class="block font-medium leading-6 text-gray-900 text-base">Email</label>
       <div class="mt-2">
@@ -36,7 +36,7 @@
           name="password"
           :type="showPassword ? 'text' : 'password'"
           autocomplete="password"
-          placeholder="●●●●●●●●●●●●●●●●●●"
+          placeholder="********"
           :class="{
             borderError: !!validate.password
           }"
@@ -94,29 +94,31 @@
       :title="modalTitle"
       @update:visible="modalVisible = $event"
     >
-      <form class="space-y-4" @submit.prevent="forgetPassword">
+      <form class="space-y-4" @submit.prevent="handleForgetPassword">
         <div class="sm:col-span-4">
           <label for="email" class="block font-medium leading-6 text-gray-900 text-base"
             >Email</label
           >
           <div class="mt-2">
             <input
-              v-model="user.email"
-              id="email"
-              name="email"
+              v-model="emailRemember"
+              id="emailRemember"
+              name="email_remember"
               type="email"
               autocomplete="email"
               placeholder="johndoe@email.com"
               class="block w-full rounded-md border-0 py-1.5 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primaryColor sm:text-sm sm:leading-6 outline-none text-base font-regular"
               :class="{
-                borderError: !!validate.email
+                borderError: !!validate.email_remember
               }"
               @input="clearError('email')"
             />
           </div>
-          <span v-if="validate.email" class="block font-medium text-red-500 text-xs mt-1">{{
-            validate.email[0]
-          }}</span>
+          <span
+            v-if="validate.email_remember"
+            class="block font-medium text-red-500 text-xs mt-1"
+            >{{ validate.email_remember[0] }}</span
+          >
         </div>
         <div class="flex items-center mt-6 space-x-4 rtl:space-x-reverse">
           <button
@@ -141,8 +143,8 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import http from '@/services/http.js'
+import { forgetPassword, login } from '@/services/http.js'
+import { sleep } from '@/utils/sleep.js'
 import ModalStandard from '@/components/Modal/ModalStandard.vue'
 import ButtonStandard from '@/components/Buttons/ButtonStandard.vue'
 
@@ -154,14 +156,15 @@ const user = reactive({
   password: ''
 })
 
+const emailRemember = ref('')
+const validate = reactive({})
+
 const modalVisible = ref(false)
 const modalTitle = ref('Recuperar senha')
 
 const showPassword = ref(false)
 
 const router = useRouter()
-const toast = useToast()
-const validate = reactive({})
 
 const toggleModal = () => {
   modalVisible.value = !modalVisible.value
@@ -175,40 +178,27 @@ const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-const login = async () => {
-  try {
-    const response = await http.post('login', {
-      email: user.email,
-      password: user.password
-    })
-    localStorage.setItem('access_token', response.data.access_token)
-    toast.success(response.data.message)
-    router.push('/dashboard')
-  } catch (error) {
-    if (error.response && error.response.status === 422) {
-      const validationErrors = error.response.data.errors
-      Object.assign(validate, validationErrors)
-    } else {
-      toast.error(error.response.data.message)
-    }
+const handleLogin = async (e) => {
+  e.preventDefault()
+  const resp = await login(user)
+  if (resp.status === 200) {
+    await sleep(1000)
+    router.push({ path: '/dashboard' })
+  } else {
+    console.log(resp)
+    Object.assign(validate, resp)
   }
 }
 
-const forgetPassword = async () => {
-  try {
-    const response = await http.post('forgotpassword', {
-      email: user.email
-    })
-    console.log(response)
-    toast.success(response.data.Message)
-    router.push('/')
-  } catch (error) {
-    if (error.response && error.response.status === 422) {
-      const validationErrors = error.response.data.errors
-      Object.assign(validate, validationErrors)
-    } else {
-      toast.error(error.response.data.Message)
-    }
+const handleForgetPassword = async (e) => {
+  e.preventDefault()
+  const data = { email_remember: emailRemember.value }
+  const resp = await forgetPassword(data)
+  if (resp.status === 200) {
+    console.log('200')
+    toggleModal()
+  } else {
+    Object.assign(validate, resp)
   }
 }
 </script>
