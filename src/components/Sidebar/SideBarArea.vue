@@ -22,6 +22,14 @@
           </div>
         </template>
       </nav>
+
+      <div
+        class="flex items-center gap-2.5 py-2 px-4 font-medium duration-300 ease-in-out hover:bg-primaryColor cursor-pointer"
+        @click="handleLogout"
+      >
+        <v-icon name="fa-sign-out-alt" flip="horizontal" scale="1.2" />
+        <p class="text-white">Logout</p>
+      </div>
     </div>
   </aside>
 </template>
@@ -30,6 +38,17 @@
 import SidebarItem from './SidebarItem.vue'
 import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
+import { logout } from '@/services/http'
+import { sleep } from '@/utils/sleep'
+import router from '@/router'
+
+const handleLogout = async () => {
+  const resp = await logout()
+  if (resp.status === 200) {
+    await sleep(1000)
+    router.push({ path: '/auth/login' })
+  }
+}
 
 const menuGroups = ref([
   {

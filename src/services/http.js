@@ -84,3 +84,16 @@ export const register = async (data) => {
     }
   }
 }
+
+export const logout = async () => {
+  try {
+    const response = await client.post('logout')
+    if (response.status === 200) {
+      localStorage.clear()
+      toast.success(response.data.message)
+    }
+    return response
+  } catch (error) {
+    toast.error(error.response.data.message)
+  }
+}
