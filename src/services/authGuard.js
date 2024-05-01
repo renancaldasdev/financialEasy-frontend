@@ -5,7 +5,9 @@ const authGuard = (to, from, next) => {
   if (currentUser && currentUser.Authorization) {
     next()
   } else {
-    next('/unauthorized')
+    if (!currentUser) {
+      next('/unauthorized')
+    }
   }
 }
 

@@ -55,7 +55,6 @@ export const forgetPassword = async (data) => {
     toast.success(response.data.message)
     return response
   } catch (error) {
-    console.log(error)
     if (error.response && error.response.status === 422) {
       const validationErrors = error.response.data.errors
       return validationErrors
@@ -68,7 +67,6 @@ export const forgetPassword = async (data) => {
 export const register = async (data) => {
   try {
     const response = await client.post('register', data)
-    console.log(response.data)
     if (response.status === 201) {
       setCurrentUser(data)
       localStorage.setItem('access_token', response.data.access_token)

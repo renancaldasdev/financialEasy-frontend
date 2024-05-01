@@ -109,7 +109,7 @@
       </div>
 
       <RouterLink
-        to="/"
+        to="/auth/login"
         class="mt-2 block text-center font-semiBold text-gray02 hover:text-gray01 transition-all duration-300"
       >
         Fazer Login
@@ -174,9 +174,8 @@ const handleRegister = async (e) => {
   const resp = await register(user)
   if (resp.status === 201) {
     await sleep(1000)
-    router.push({ path: '/dashboard' })
+    router.push({ path: '/app/dashboard' })
   } else {
-    console.log(resp)
     Object.assign(validate, resp)
   }
 }
